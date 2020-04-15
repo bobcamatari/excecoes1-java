@@ -1,9 +1,12 @@
 package model.entidades;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Reservas {
+	public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
 	private Integer numeroQuarto;
 	private Date checkIn;
 	private Date checkOut;
@@ -37,7 +40,17 @@ public class Reservas {
 	}
 	
 	public void atualizacaoDatas(Date checkIn, Date checkOut) {
-		
+		this.checkIn = checkIn;
+		this.checkOut = checkOut;
+	}
+	
+	@Override
+	public String toString() {
+		return "Numero do quarto "+ numeroQuarto +
+				", CheckIn: "+ sdf.format(checkIn) +
+				", CheckOut: "+ sdf.format(checkOut)+
+				", Duração da estadia: "+ duracao()+ " noites";
+				
 	}
 	
 }
