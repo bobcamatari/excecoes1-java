@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import model.excecoes.DominanteExcecoes;
+
 public class Reservas {
 	public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -11,8 +13,10 @@ public class Reservas {
 	private Date checkIn;
 	private Date checkOut;
 	
-	public Reservas(Integer numeroQuarto, Date checkIn, Date checkOut) {
-		super();
+	public Reservas(Integer numeroQuarto, Date checkIn, Date checkOut) throws DominanteExcecoes {
+		if (!checkOut.after(checkIn)) {
+			throw new DominanteExcecoes("Data de CheckIn posterior a data de CheckOut");
+		} 			
 		this.numeroQuarto = numeroQuarto;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -39,19 +43,17 @@ public class Reservas {
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 	
-	public String atualizacaoDatas(Date checkIn, Date checkOut) {
+	public void atualizacaoDatas(Date checkIn, Date checkOut) throws DominanteExcecoes{
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
-			return "Data de reserva antes da data atual!";		
+			throw new DominanteExcecoes("Data de reserva antes da data atual!");		
 		}
 		if (!checkOut.after(checkIn)) {
-			return "Data de CheckIn posterior a data de CheckOut";
+			throw new DominanteExcecoes("Data de CheckIn posterior a data de CheckOut");
 		} 		
 			this.checkIn = checkIn;
-			this.checkOut = checkOut;
-			return null;
-	}	
-	
+			this.checkOut = checkOut;			
+	}		
 	@Override
 	public String toString() {
 		return "Numero do quarto "+ numeroQuarto +
